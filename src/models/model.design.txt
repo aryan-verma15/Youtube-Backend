@@ -1,0 +1,94 @@
+colorMode pastel
+videos [icon: video, color: red] {
+  _id string pk
+  videoFile string
+  thumbnail string
+  owner ObjectID users
+  title string
+  description string
+  duration number
+  views number
+  isPublished boolean
+  createdAt date
+  updatedAt date
+}
+
+users [icon: user, color: green] {
+  _id string pk
+  username string
+  email string
+  password string
+  fullName string
+  avatar string 
+  coverImage string
+  watchHistroy ObjectID[] videoFile 
+  refreshToken string
+  createdAt date
+  updatedAt date
+}
+
+playlist[color: Green] {
+  _id string pk
+  name string
+  description string
+  owner ObjectID users
+  videos ObjectID[] videos
+  createdAt date
+  updatedAt date
+}
+
+tweets [icon: twitter, color: blue] {
+  _id string pk
+  content string
+  owner string
+  createdAt date
+  updatedAt date
+}
+
+comments [icon: comment, color: orange] {
+  _id string pk
+  content string
+  owner string
+  video string
+  createdAt date
+  updatedAt date
+}
+
+subscriptions [icon: dollar-sign, color: purple] {
+  _id string pk
+  subscriber ObjectID users
+  channel ObjectID users
+  createdAt date
+  updatedAt date
+}
+
+likes [icon: thumbs-up, color: yellow] {
+  _id string pk
+  video ObjectID videos
+  comment ObjectID comments
+  tweet ObjectID tweets
+  likedBy ObjectID users
+  createdAt date
+  updatedAt date
+}
+
+users.watchHistroy <> videos._id
+
+
+videos.owner - users._id
+
+subscriptions.subscriber - users._id
+subscriptions.channel - users._id
+
+likes.likedBy - users._id
+likes.video - videos._id
+likes.comment - comments._id
+likes.tweet - tweets._id
+
+comments.owner - users._id
+comments.video - videos._id
+
+playlist.owner - users._id
+playlist.videos < videos._id
+
+tweets.owner - users._id
